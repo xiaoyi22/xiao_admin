@@ -5,4 +5,8 @@ module.exports = {
     open: true,
     proxy:null,
   },
+  productionSourceMap: true,
+  configureWebpack: {
+    devtool: 'source-map'
+  }
 }

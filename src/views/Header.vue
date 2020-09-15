@@ -48,7 +48,7 @@ export default {
 .header_content {
   border-top: 1px solid #e7eaec;
   border-bottom: 1px solid #e7eaec;
-  background-color: #f3f3f4;
+  background-color:#ffffff;
   .bg-purple-right {
     line-height: 56px;
     .user_right {

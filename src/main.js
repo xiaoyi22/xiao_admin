@@ -5,9 +5,10 @@ import router from './router';
 import store from './store';
 import './plugins/element.js'
 import './plugins/api.js'
+import echarts  from 'echarts'
+
 Vue.config.productionTip = false;
-
-
+Vue.prototype.$echarts = echarts;
 new Vue({
   router,
   store,
