@@ -12,19 +12,20 @@
           <el-tabs
             v-model="activeIndex"
             type="border-card"
+            closable
             @tab-click="tabClick"
             @tab-remove="tabRemove"
-          >
-            <el-tabs-pane
-              :closable="item.name ==='首页' ? false:true"
-              :key="item.name"
-              v-for="(item) in options"
+           style="background:#ffffff;height:35px">
+            <el-tab-pane
+              :key="item.route"
+              v-for="(item, index) in options"
               :label="item.name"
               :name="item.route"
-            ></el-tabs-pane>
+            ></el-tab-pane>
           </el-tabs>
+           <router-view></router-view>
         </div>
-        <Main />
+       
       </el-main>
     </el-container>
   </el-container>
@@ -33,81 +34,67 @@
 <script>
 import Aside from "./Aside";
 import Header from "./Header";
-import Main from "./Main";
 export default {
   components: {
     Aside,
     Header,
-    Main,
   },
 
   methods: {
+    // tab切换时，动态的切换路由
     tabClick(tab) {
-      this.$route.push({
-        path: this.activeIndex,
-      }); //路由跳转
+      let path = this.activeIndex;
+      this.$router.replace({ path: path});
     },
     tabRemove(targetName) {
-      this.$store.dispatch("menu/deleteTabs", targetName);
-      // 还需要同事处理一种需要移除的页面为当前页面时，将上一个tab页作为激活。
+      // 首页不可删除
+      if (targetName == "/public/index") {
+        return;
+      }
+      this.$store.commit("delete_tabs", targetName);
       if (this.activeIndex === targetName) {
-        // 设置当前激活路由
-        if (this.option && this.options.length >= 1) {
-          this.$store.dispatch(
-            "menu/setAciveIndex",
+        // 设置当前激活的路由
+        if (this.options && this.options.length >= 1) {
+          this.$store.commit(
+            "set_active_index",
             this.options[this.options.length - 1].route
           );
-          this.$route.push({
-            path: this.activeIndex,
-          });
+          this.$router.replace({ path: this.activeIndex });
         } else {
-          this.$route.push({
-            path: "/public/index",
-          });
+          this.$router.replace({ path: "/public/index" });
         }
       }
     },
   },
   computed: {
-    options: {
-      get() {
-        return this.$store.state.menu.options;
-      },
-      set(val) {
-        this.$store.dispatch("menu/addTabs", val);
-      },
+    options () {
+      return this.$store.state.options;
     },
-    // 动态设置及获取当前激活的 tab 页
     activeIndex: {
-      get() {
-        return this.$store.state.menu.activeIndex;
+      get () {
+        return this.$store.state.activeIndex;
       },
-      set(val) {
-        this.$store.dispatch("menu/setActiveIndex", val);
-      },
-    },
-  },
-  mounted() {
-    let options = JSON.parse(window.localStorage.getItem("menuOptins"));
-    this.activeIndex = localStorage.getItem("menuIndex");
-    if (!options) {
-      options = [];
-      this.$route.push("/public/index");
-      this.$store.commit("menu/SET_ACTIVE_NDEX", options.route);
-    } else {
-      this.$store.commit("menu/SET_OPTIONS", options);
+      set (val) {
+        this.$store.commit('set_active_index', val);
+      }
     }
-    // 设置当前激活的路由
-    if (options && options.length >= 1) {
-      for (var i = 0; i < options.length; i++) {
-        if (options[i].route == this.activeIndex) {
-          this.$store.dispatch("menu/setActiveIndex".options[i].route);
+  },
+  watch: {
+    '$route'(to) {
+      let flag = false;
+      for (let option of this.options ) {
+        if (option.route === to.path) {
+          flag = true;
+          this.$store.commit('set_active_index', to.path);
+          break
         }
       }
-    } else {
-      this.$route.push("public/index");
+      if (!flag) {
+        this.$store.commit('add_tabs', {route: to.path, name: to.name});
+        this.$store.commit('set_active_index', to.path);
+      }
     }
-  },
+  }
 };
 </script>
 

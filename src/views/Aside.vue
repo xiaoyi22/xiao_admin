@@ -7,6 +7,7 @@
       text-color="#ffffff"
       background-color="#263949"
       :style="{height:clientHeight+'px'}"
+      router
     >
       <el-menu-item index="1">
         <i class="el-icon-menu"></i>
@@ -22,7 +23,7 @@
           <el-menu-item index="2-1">其他</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="3">
+      <el-menu-item index="/public/userManagement">
           <i class="el-icon-user"></i>
           <span>用户管理</span>
       </el-menu-item>

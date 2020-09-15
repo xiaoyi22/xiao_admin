@@ -64,7 +64,7 @@ export default {
             .then((res) => {
               sessionStorage.setItem("username", res.username);
               sessionStorage.setItem("token", res.token);
-              this.$router.push('public/index');
+              this.$router.push('/public');
             })
             .catch((res) => {
               alert(res.msg);

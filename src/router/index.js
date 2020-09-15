@@ -12,9 +12,14 @@ const routes = [{
   name: 'login',
   component: () => import('../components/login.vue'),
 }, {
-  path: '/public/index',
-  name: 'index',
-  component: () => import('../views/index.vue')
+  path: '/public',
+  name: 'public',
+  component: () => import('../views/index.vue'),
+  children:[
+    { path:'index' ,name:'index' ,component:()=>import('../views/Main.vue')},
+    { path:'userManagement' ,name:'userManagement', component:()=>import('../components/userManagement.vue')},
+    {path:'',redirect:'/public/index'}
+  ]
 }];
 const router = new VueRouter({
   routes,
