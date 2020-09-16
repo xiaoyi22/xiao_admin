@@ -18,7 +18,7 @@
            style="background:#ffffff;height:35px">
             <el-tab-pane
               :key="item.route"
-              v-for="(item, index) in options"
+              v-for="(item) in options"
               :label="item.name"
               :name="item.route"
             ></el-tab-pane>
@@ -39,12 +39,16 @@ export default {
     Aside,
     Header,
   },
-
   methods: {
     // tab切换时，动态的切换路由
     tabClick(tab) {
       let path = this.activeIndex;
-      this.$router.replace({ path: path});
+      if(path !=this.$route.path){
+        this.$router.replace({path: path});
+      } 
+      else{
+
+      }
     },
     tabRemove(targetName) {
       // 首页不可删除
@@ -67,8 +71,8 @@ export default {
     },
   },
   computed: {
-    options () {
-      return this.$store.state.options;
+    options(){
+        return this.$store.state.options
     },
     activeIndex: {
       get () {
@@ -78,6 +82,12 @@ export default {
         this.$store.commit('set_active_index', val);
       }
     }
+  },
+  mounted(){  
+     if(this.options.length==0){
+       this.$store.commit('add_tabs',{route: this.$route.path, name: this.$route.name});  
+        this.$store.commit('set_active_index', this.$route.path);
+     }
   },
   watch: {
     '$route'(to) {

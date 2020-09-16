@@ -2,6 +2,16 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Request from "../plugins/request";
 
+
+
+
+
+// 修改首页路由重复点击报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location){
+  return originalPush.call(this,location).catch(err=>err)
+}
+
 Vue.use(VueRouter);
 
 const routes = [{
@@ -24,10 +34,13 @@ const routes = [{
 const router = new VueRouter({
   routes,
 });
+
+
+
 // 全局路由守卫 拦截所有请求
 router.beforeEach((to, from, next) => {
   let token = sessionStorage.getItem('token'); //获取sessionStorage 的token  
-  console.log(token,to.path)
+ // console.log(token,to.path)
   if(token){   //sessionStorage里面是否存在token
     Request.post('/checkToken',{},token).then(res=>{ //向后端发送token 验证是否 一致 
       next(); 
