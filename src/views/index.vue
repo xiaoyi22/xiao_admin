@@ -88,6 +88,8 @@ export default {
        this.$store.commit('add_tabs',{route: this.$route.path, name: this.$route.name});  
         this.$store.commit('set_active_index', this.$route.path);
      }
+      this.$router.replace({path:this.activeIndex});
+       
   },
   watch: {
     '$route'(to) {

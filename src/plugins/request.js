@@ -2,7 +2,7 @@ import axios from 'axios'
 
 let baseURL;
 if (process.env.NODE_ENV == 'development') {
-  baseURL = 'http://127.0.0.1:4000/pulick'
+  baseURL = 'http://127.0.0.1:4000/public'
 } else {
   baseURL = "xxxx"
 }
