@@ -8,9 +8,10 @@
       background-color="#263949"
       :style="{height:clientHeight+'px'}"
       router
+      :collapse="isCollapse"
     >
       <el-menu-item index="1">
-        <i class="el-icon-menu"></i>
+        
       </el-menu-item>
       <el-submenu index="2">
         <template slot="title">
@@ -32,10 +33,11 @@
 </template>
 
 <script>
+import bus  from '../plugins/eventBus'
 export default {
   data() {
     return {
-      isCollapse: false,
+      isCollapse: true,
       clientHeight:
         document.documentElement.clientHeight || document.body.clientHeight,
     };
@@ -45,12 +47,16 @@ export default {
       this.clientHeight =
         document.documentElement.clientHeight || document.body.clientHeight;
     };
+    bus.$on('switchAside',data=>{
+     this.isCollapse = !this.isCollapse
+     this.$emit('switchAsideindex',this.isCollapse)
+    })
   }
 };
 </script>
 
 <style lang="less" scope>
 .aside-content{
-    width:210px;
+    
 }
 </style>

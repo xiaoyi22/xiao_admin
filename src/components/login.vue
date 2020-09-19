@@ -47,9 +47,9 @@ export default {
       },
     };
   },
-  mounted(){
-      sessionStorage.removeItem('username');
-      sessionStorage.removeItem('token');
+  mounted() {
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("token");
   },
   methods: {
     submitForm(fromName) {
@@ -64,7 +64,7 @@ export default {
             .then((res) => {
               sessionStorage.setItem("username", res.username);
               sessionStorage.setItem("token", res.token);
-              this.$router.push('public');
+              this.$router.push("public");
             })
             .catch((res) => {
               alert(res.msg);

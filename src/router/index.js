@@ -26,8 +26,8 @@ const routes = [{
   name: 'public',
   component: () => import('../views/index.vue'),
   children:[
-    { path:'index' ,name:'index' ,component:()=>import('../views/Main.vue')},
-    { path:'userManagement' ,name:'userManagement', component:()=>import('../components/userManagement.vue')},
+    { path:'index' ,name:'主页页面' ,component:()=>import('../views/Main.vue')},
+    { path:'userManagement' ,name:'用户管理', component:()=>import('../components/userManagement.vue')},
     {path:'',redirect:'/public/index'}
   ]
 }];
